@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        int n=s.size();
+        if(n==0) return vector<vector<string>>{};
+        vector<vector<bool>> ispal(n, vector<bool>(n, false));
+       vector<vector<string>> res;
+        vector<string> cur;
+        for(int k=0; k<n; k++) {
+            for(int i=0; i+k<n; i++) {
+                if(k==0) {
+                    ispal[i][i+k]=true;
+                } else {
+                    if(s[i]==s[i+k]) {
+                        ispal[i][i+k]=true;
+                        if(k>=2){
+                            ispal[i][i+k]=ispal[i+1][i+k-1];
+                        }
+                    }
+                }
+            }
+        }
+        
+        bt(res, cur, 0, s, ispal);
+        return res;
+ 
+    }
+    void bt(vector<vector<string>>& res, vector<string> cur, int i, string s, vector<vector<bool>>& ispal) {
+        if(i==s.size()) {res.push_back(cur);return;}
+        for(int j=i; j<s.size(); j++) {
+            if(ispal[i][j]) {
+                vector<string> tmp=cur;
+                tmp.push_back(s.substr(i, j-i+1));
+                bt(res, tmp, j+1, s, ispal);
+            }
+        }
+    }
+};
