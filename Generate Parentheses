@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        string cur(n*2, '(');
+        dfs(res, cur, 0, 0, 2*n);
+        return res;
+    }
+    void dfs(vector<string>& res, string cur, int i, int j, int n) {
+        if(i+j==n) {
+            res.push_back(cur); 
+            return;
+        }
+        if(i>j) {
+            cur[i+j]=')';
+            dfs(res,cur,i, j+1, n);
+        } 
+        if (i<n/2 ){
+           cur[i+j]='(';
+            dfs(res,cur,i+1, j, n);   
+        }
+    }
+};
