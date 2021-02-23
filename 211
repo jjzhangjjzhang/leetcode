@@ -1,0 +1,50 @@
+struct TrieNode {
+    bool isLeaf;
+    TrieNode* next[26];
+};
+class WordDictionary {
+public:
+    /** Initialize your data structure here. */
+    TrieNode* root;
+    
+    WordDictionary() {
+        root=new TrieNode{false};
+    }
+    
+    void addWord(string word) {
+        TrieNode* tmp=root;
+        for(char c: word) {
+            if(tmp->next[c-'a']==NULL) {
+               tmp->next[c-'a']=new TrieNode{false}; 
+            }
+            tmp=tmp->next[c-'a'];
+        }
+        tmp->isLeaf=true;
+    }
+    
+    bool search(string word) {
+        return dfs(word, root, 0);
+    }
+    bool dfs(string word, TrieNode *ro, int i) {
+       if(i>=word.size()) {return ro->isLeaf;}
+        if(word[i]!='.') {
+            if(ro->next[word[i]-'a']==NULL) {return false;}
+            return dfs(word,ro->next[word[i]-'a'], i+1 );
+        } else {
+            for(int j=0; j<26; j++) {
+                if(ro->next[j]) {
+                if(dfs(word, ro->next[j], i+1)) return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
