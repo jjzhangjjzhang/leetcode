@@ -1,0 +1,46 @@
+struct TrieNode {
+    bool isLeaf;
+    TrieNode* next[2];
+};
+class Solution {
+public:
+    TrieNode* buildTrie(vector<int>& nums) {
+        TrieNode* root=new TrieNode{false};
+        for(auto m: nums) {
+            TrieNode* tmp=root;
+            for(int i=31; i>=0; i--) {
+                int k=(m>>i)&1;
+                if(tmp->next[k]==NULL) {
+                    tmp->next[k]=new TrieNode{false};
+                }
+                tmp=tmp->next[k];
+            }
+            tmp->isLeaf=true;
+        }
+        return root;
+    }
+    int findMaximumXOR(vector<int>& nums) {
+       TrieNode* root=buildTrie(nums);
+        int res=0;
+        for(auto m: nums) {
+            res=max(res, findMatch(root, m));
+        }
+        return res;
+    }
+    
+     int findMatch(TrieNode* root, int num) {
+        int res = 0;
+         TrieNode* tmp=root;
+        for (int i = 31; i >= 0; i--) {
+            int index = ((num >> i) & 1) ? 0 : 1;
+            if (tmp->next[index]) {
+                res +=(1<<i);
+                tmp = tmp->next[index];
+            } else {
+                tmp = tmp->next[index ? 0 : 1];
+            }
+        }
+        return res;
+    }
+    
+};
