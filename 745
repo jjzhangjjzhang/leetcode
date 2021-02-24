@@ -1,0 +1,47 @@
+struct TrieNode {
+    int index;
+    TrieNode* next[27];
+};
+class WordFilter {
+public:
+    TrieNode* root=new TrieNode{-1};
+
+    WordFilter(vector<string>& words) {
+        for( int j=0; j<words.size(); j++) {
+            string w=words[j];
+            for(int i=w.size()-1; i>=0; i--) {
+                string post=w.substr(i);
+                post=post+'{'+w;
+                insert(root, post, j);
+            }
+        }
+    }
+    void insert(TrieNode* root, string post, int index) {
+        TrieNode* tmp=root;
+        for(auto x: post) {
+            if(tmp->next[x-'a']==NULL) {
+                tmp->next[x-'a']=new TrieNode{};
+            }
+            tmp=tmp->next[x-'a'];
+            tmp->index=index;
+        }
+    }
+    
+    int f(string prefix, string suffix) {
+        string x=suffix+'{'+prefix;
+        TrieNode* tmp=root;
+        for(auto y: x) {
+            if(tmp->next[y-'a']==NULL) {
+                return -1;
+            }
+            tmp=tmp->next[y-'a'];
+        }
+        return tmp->index;
+    }
+};
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter* obj = new WordFilter(words);
+ * int param_1 = obj->f(prefix,suffix);
+ */
