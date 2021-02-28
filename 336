@@ -1,0 +1,81 @@
+struct TrieNode {
+    int index;
+    TrieNode* next[26];
+    vector<int> pals;
+};
+class Solution {
+public:
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        TrieNode* root=builtTrie(words);
+        int n=words.size();
+        vector<vector<int>> res;
+        for(int i=0; i<n; i++) {
+            search(root, words[i], res, i);      
+        }
+        return res;
+    }
+    
+    void search( TrieNode* root, string word, vector<vector<int>>& res, int k){
+        int m=word.size();
+        TrieNode* tmp=root;
+        int i=m-1; 
+        while(i>=0) {
+            if(tmp->next[word[i]-'a']!=NULL) {
+                tmp=tmp->next[word[i]-'a'];
+                 if(tmp->index!=-1 && tmp->index!=k ) {
+                    if(isPal(word.substr(0, i))) {
+                        vector<int> tmp1{tmp->index, k};
+                        res.push_back(tmp1);
+                    }
+                }
+            } else {
+               break;
+            }
+            i--;
+        }
+        if(i==-1) {
+            for(auto x: tmp->pals) {
+                if(x!=k) {
+                vector<int> tmp1{x, k};
+                res.push_back(tmp1);
+                }
+            }
+        }
+        
+    }
+    
+     bool isPal(string x) {
+        int i=0, j=x.size()-1;
+        while(i<j) {
+            if(x[i++]!=x[j--]) {return false;}
+        }
+        return true;
+    }
+    
+    TrieNode* builtTrie(vector<string>& words) {
+        TrieNode* root=new TrieNode{-1};
+        for(int i=0; i<words.size(); i++) {
+            string w=words[i];
+            insert(root, w, i);
+            
+        }
+        return root;
+    }
+    
+    void insert(TrieNode* root, string w, int l) {
+        TrieNode* tmp=root;
+        for(int i=0; i<w.size(); i++) {
+            char k=w[i];
+            if(tmp->next[k-'a']==NULL) {
+                tmp->next[k-'a']=new TrieNode{-1};
+            }
+            if(isPal(w.substr(i, w.size()-i))) {
+                tmp->pals.push_back(l);
+            }
+            tmp=tmp->next[k-'a'];
+        }
+        if(w=="") tmp->pals.push_back(l);
+        tmp->index=l;
+    }
+
+};
