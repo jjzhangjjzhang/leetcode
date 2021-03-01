@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<string> letterCasePermutation(string S) {
+        vector<string> res;
+        dfs(res, S, 0, "");
+        return res;
+    }
+    void dfs(vector<string>& res, string S, int k, string cur) {
+        if(k>=S.size()) {
+            res.push_back(cur);
+            return;
+        }
+        cur.push_back(S[k]);
+        dfs(res, S, k+1, cur);
+        cur.pop_back();
+        if(isDidit(S[k])) {
+            cur.push_back(rev(S[k]));
+            dfs(res, S, k+1, cur);
+        }
+    }
+    bool isDidit(char c) {
+        return (c>='a' && c<='z') || (c>='A' && c<='Z');
+    }
+    char rev(char c) {
+        if(c>='a' && c<='z') return c-'a'+'A';
+        if(c>='A' && c<='Z') return c-'A'+'a';
+        return c;
+    }
+};
