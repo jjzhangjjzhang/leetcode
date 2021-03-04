@@ -1,0 +1,57 @@
+class Solution {
+public:
+   vector<vector<int>> getGcd() {
+       vector<vector<int>> res(51, vector<int>(51, -1));
+       for(int i=1; i<51; i++) {
+           for(int j=i; j<51; j++) {
+               if(__gcd(i, j)==1) {
+                   res[i][j]=1;
+                   res[j][i]=1;
+               }
+           }
+       }
+       return res;
+   }
+    
+void dfs(vector<int>& nums, vector<vector<int>> &connect, vector<vector<int>>& gcd, vector<int> path, vector<int> &res) {
+    if(path.size()==0) return;
+    
+    int last=path[path.size()-1];
+    
+    cout<<res.size();
+        for(int k=path.size()-2; k>=0; k--) {
+            if(gcd[nums[path[k]]][nums[last]]==1) {
+                res[last]=path[k];
+                break;
+            }
+        }
+    cout<<" "<<res[last];
+    vector<int> children=connect[last];
+    int parent=-1;
+    if(path.size()>=2) parent=path[path.size()-2];
+    for(auto child: children) {
+        if(child!=last && child!=parent) {    
+            path.push_back(child);  
+            dfs(nums, connect, gcd, path, res);
+            path.pop_back();     
+        }
+    }    
+}
+    
+vector<int> getCoprimes(vector<int>& nums, vector<vector<int>>& edges) {
+    int n=nums.size();
+    vector<vector<int>> connect(n);
+    vector<vector<int>> gcd=getGcd();
+    for(auto e: edges) {
+        connect[e[0]].push_back(e[1]);
+        connect[e[1]].push_back(e[0]);
+    }
+    vector<int> res(n, -1);
+    vector<int> path;
+    path.push_back(0);
+    dfs(nums, connect,  gcd, path, res);
+    
+    return res;
+}
+    
+};
