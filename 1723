@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        vector<int> loads(k,0);
+        int n=jobs.size();
+        for(int i=0; i<n; i++) {
+            loads[n%k]+=jobs[i];
+        }
+        int res=0;
+        for(int i=0; i<k; i++) {
+            res=max(res, loads[i]);
+        }
+        vector<int> curloads(k,0);
+        dfs(jobs,k, res, 0, curloads);
+        return res;
+    }
+    
+    void dfs(vector<int> jobs, int k, int& res, int i,vector<int>& curloads) {
+        if(i>jobs.size()-1) {
+            int tmp=0;
+            for(auto x: curloads) {
+                tmp=max(tmp, x);
+            }
+            res=min(tmp, res);
+            return;
+        }
+        
+        unordered_set<int> loadsSeen;
+        for(int j=0;j<k; j++) {
+            if(loadsSeen.find(curloads[j])==loadsSeen.end()) {
+                loadsSeen.insert(curloads[j]);
+                if(curloads[j]+jobs[i]<res){
+                    curloads[j]=curloads[j]+jobs[i];
+                    dfs(jobs,k, res, i+1, curloads);
+                    curloads[j]=curloads[j]-jobs[i];
+                }
+            }
+        }
+        
+    }
+};
