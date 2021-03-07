@@ -1,0 +1,15 @@
+class Solution {
+public:
+    string longestPrefix(string s) {
+        long pre = 0, post = 0, mul = 1, len = 0, mod = 1000000007;
+        for (int i = 0; i<s.size()-1; ++i ) {
+            int j=s.size()-1-i;
+            pre = (pre * 26 + s[i] - 'a') % mod;
+            post = (post + mul * (s[j] - 'a')) % mod;
+            mul = mul * 26 % mod;
+            if (pre == post)
+                len = i + 1;
+        }
+        return s.substr(0, len);
+    }
+};
