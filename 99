@@ -1,0 +1,21 @@
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode *first=NULL, *second=NULL, *preVal;
+        preVal=NULL;
+        inOrd(root, first, second, preVal);
+        int tmp=first->val;
+        first->val=second->val;
+        second->val=tmp;
+    }
+    
+    void inOrd(TreeNode *node, TreeNode*& first, TreeNode*& second, TreeNode*& pre) {
+        if(node->left) inOrd(node->left, first, second, pre);
+        if(pre!=NULL && node->val<pre->val) {
+            if(first==NULL) {first=pre;second=node;}
+            else {second=node;}
+        }
+        pre=node;
+        if(node->right) inOrd(node->right, first, second, pre);
+    }
+};
