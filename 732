@@ -1,0 +1,19 @@
+class MyCalendarThree {
+public:
+    map<int, int> mp;
+    MyCalendarThree() {
+        
+    }
+    
+    int book(int start, int end) {
+        mp[start]++;
+        mp[end]--;
+        int res=0;
+        int sofar=0;
+        for(auto x: mp) {
+            sofar+=x.second;
+            res=max(res, sofar);
+        }
+        return res;
+    }
+};
