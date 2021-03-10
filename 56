@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool static comp(vector<int> a, vector<int> b) {return a[0]<b[0];}
+
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end(), comp);
+         vector<vector<int>> res;
+        vector<int> cur;
+        for(auto intv: intervals) {
+            if(cur.empty()) {
+                cur=intv;
+            } else {
+                if(intv[0]>cur[1]) {
+                    res.push_back(cur);
+                    cur=intv;
+                } else {
+                    cur[1]=max(intv[1], cur[1]);
+                }
+            }
+        }
+        res.push_back(cur);
+        return res;
+    }
+};
