@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int minChanges(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<vector<int> > count(k, vector<int>(1024, 0));
+        vector<vector<int> > dp(k, vector<int>(1024, n + 1));
+        unordered_set<int> posis[k];
+                
+        for(int i = 0; i < n; i++) {
+            count[i%k][nums[i]]++;
+            posis[i%k].insert(nums[i]);
+        }
+        
+        int minLast = n+1;
+        for(int j = 0; j < 1024; j++) {
+            int tmp = n/k;
+            if(n%k >0) tmp++; 
+            dp[0][j] = tmp - count[0][j];
+            minLast=min(minLast, dp[0][j]);
+        }
+        for(int i = 1; i < k; i++) { 
+            int tmp = n / k + (((n % k) > i) ? 1 : 0);
+            int minCur = n + 1;
+            for(int j = 0; j < 1024; j++) {
+                    for(auto x : posis[i]) { 
+                        dp[i][j] = min(dp[i][j], dp[i-1][j^x] + tmp - count[i][x]);
+                    }
+                    dp[i][j] = min(dp[i][j], minLast + tmp);
+                
+                minCur = min(minCur, dp[i][j]);
+            }
+            
+            minLast = minCur;  
+        }
+        return dp[k-1][0];
+    }
+    
+  
+};
