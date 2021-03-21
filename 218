@@ -1,0 +1,33 @@
+class Solution {
+public:
+    static bool comp(pair<int,int> a, pair<int,int> b) {
+        return a.first<b.first || (a.first==b.first && a.second>b.second);
+    }
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<pair<int, int>> hts;
+        vector<vector<int>> ans;              
+        for (auto x : buildings) {
+            hts.push_back(make_pair(x[0], x[2]));
+            hts.push_back(make_pair(x[1], -x[2]));
+        }
+        sort(hts.begin(), hts.end(), comp);
+        multiset<int> toInspect = {0};
+        int top = 0;
+        for (auto x : hts) {
+            cout<<x.second<<" ";
+            if (x.second>0) { 
+                toInspect.insert(-x.second);
+            } else { 
+                toInspect.erase(toInspect.find(x.second));
+            }
+            int curTop=-(*toInspect.begin());
+            if(curTop!=top) {
+                ans.push_back({x.first, curTop});
+                top=curTop;
+            }
+            
+        }
+        
+        return ans;
+    }
+};
