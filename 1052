@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int X) {
+        vector<int> saving(customers.size(), 0);
+        for(int i=0; i<customers.size(); i++) {
+            saving[i]=customers[i]*grumpy[i];
+        }
+        int maxSave=0;
+        int tmp=0;
+        int beg=0;
+        for(int i=0; i<customers.size(); i++) {
+            tmp+=saving[i];
+            if(i>=X) {
+                tmp-=saving[i-X];
+            }
+            if(tmp>maxSave){
+                maxSave=tmp;
+            }
+        }
+                for(int i=0; i<customers.size(); i++) {
+                    if(grumpy[i]==0) {
+                        maxSave+=customers[i];
+                    }
+                }
+        return maxSave;
+    }
+};
