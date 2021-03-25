@@ -1,0 +1,27 @@
+public:
+    int findLengthOfShortestSubarray(vector<int>& arr) {
+        int l=-1, r=arr.size()-1;
+        while(r-1>=0 && arr[r-1]<=arr[r]) r--;
+        while(l+1<arr.size() && arr[l+1]<=arr[r]) {
+            if(l<0) {
+                l++;
+            }else {
+                if(arr[l+1]>=arr[l]) l++;
+                else break;
+            }
+        }
+        int res=r-l-1;
+        while(l+1<arr.size()) {
+            if(l>=0 && arr[l+1]<arr[l]) {
+                break;
+            }
+            l=l+1;
+            while(r<arr.size() && arr[r]<arr[l]) {
+                r++;
+            }
+            res=min(res, r-l-1);
+        }
+        res=max(0, res);
+        return res;
+    }
+};
