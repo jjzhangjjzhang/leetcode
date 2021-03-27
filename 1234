@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int balancedString(string s) {
+        map<char, int> mp;
+        mp['Q']=0;
+        mp['W']=1;
+        mp['E']=2;
+        mp['R']=3;
+        int n=s.size(), k=n/4;
+        int l=0;
+        int res=n;
+        vector<int> total(4,0);
+        int r=n-1;
+        while(r>=0) {    
+            if(total[mp[s[r]]]+1>k) {
+                break;
+            } else {
+               total[mp[s[r]]]++; 
+            }
+            r--;
+        }
+        res=r-l+1;
+       
+        cout<<r<<" "<<l<<" "<<endl;
+        if(res==0) return res;
+        while(l<n) {
+            if(total[mp[s[l]]]+1>k) {
+                while(r+1<n&&s[r+1]!=s[l]) {
+                    total[mp[s[r+1]]]--;
+                    r++;                    
+                }
+                if(r>=n) break;
+                r++;
+
+            } else {
+             total[mp[s[l]]]++; 
+            }
+         l++;
+             res=min(r-l+1, res);
+
+
+        }
+        return res;
+    }
+};
