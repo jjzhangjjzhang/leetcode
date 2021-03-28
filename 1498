@@ -1,0 +1,31 @@
+class Solution {
+public:
+    long pow(int x, int y) {
+        long res=1;
+        while(y>=1) {
+            res=(res*x)%(1000000000+7);
+            y--;
+        }
+        return res;
+    }
+    int numSubseq(vector<int>& nums, int target) {
+        int res=0;
+        int n=nums.size();
+        sort(nums.begin(), nums.end());
+        int l=0, r=n-1;
+        vector<int> powers(n, 1);
+        for (int i = 1 ; i < n ; ++i) {
+            powers[i] = powers[i - 1] * 2 % (1000000000+7);
+        }
+        while(l<=r) {
+        if(nums[l]+nums[r]<=target) {
+            res=(res+powers[r-l])%(1000000000+7);
+            l++;
+        } else {
+            r--;
+        }
+        }
+       
+        return res;
+    }
+};
