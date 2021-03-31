@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int splitArray(vector<int>& nums, int m) {
+        int minRes=1;
+        int maxRes=0;
+        for(auto x: nums) {
+            maxRes+=x;
+        }
+        while(minRes<=maxRes) {
+            int medium=(minRes+maxRes)/2;
+            cout<<medium<<endl;
+            if(valid(nums, m, medium)) {
+                 maxRes=medium-1;
+
+            } else {
+                minRes=medium+1;
+
+            }
+        }
+        return minRes;
+        
+    }
+    bool valid(vector<int>& nums, int m, int med) {
+        int cur=0;
+        int i=0;
+        int tot=0;
+        while(cur<nums.size()) {
+            if(tot+nums[cur]<=med) tot+=nums[cur];
+            else {
+                i++;
+                if(i>=m || nums[cur]>med) return false;
+                tot=nums[cur];
+            }
+            cur++;
+        }
+        return tot<=med;
+    }
+};
