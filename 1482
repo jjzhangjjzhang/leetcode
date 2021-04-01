@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+      int l=1, r=0;
+     if(m*k>bloomDay.size()) return -1;
+
+      for(auto x: bloomDay) {
+          r=max(r, x);
+      }    
+        while(l<=r) {
+            int medium=(l+r)/2;
+            if(valid(bloomDay, m, k, medium)) {
+                r=medium-1;
+            } else {
+                l=medium+1;
+            }
+        }
+        return l;
+    }
+    bool valid(vector<int>& bloomDay, int m, int k, int medium) {
+        int i=0;
+        int cur=0;
+        for(auto x: bloomDay) {
+          if(x<=medium) {
+              cur++;
+              if(cur==k) {
+                  cur=0;
+                  i++;
+                  if(i==m) return true;
+              }
+          } else {
+              cur=0;
+          }
+      }
+        return false;
+    }
+};
