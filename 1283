@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int l=1, r=0;
+        for(auto x: nums) {r=max(r,x);}
+        
+        while(l<=r) {
+            int medium=(l+r)/2;
+            if(valid(nums, threshold, medium)) {
+                r=medium-1;
+            } else {
+                l=medium+1;
+            }
+        }
+        return l;
+    }
+    bool valid(vector<int>& nums, int threshold, int medium) {
+        int res=0;
+        for(auto x: nums) {
+            res+=x/medium;
+            if(x%medium>0) res+=1;
+            if(res>threshold) return false;
+        }
+        return res<=threshold;
+    }
+};
