@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int D) {
+        int l=1, r=0;
+        for(auto x: weights) {
+            r+=x;
+        }
+        while(l<=r) {
+            int medium=(l+r)/2;
+            if(valid(weights, D, medium)) {
+                r=medium-1;
+            } else {
+                l=medium+1;
+            }
+        }
+        return l;
+    }
+    
+    bool valid(vector<int>& weights, int D, int medium) {
+        int d=0;
+        int cur=0;
+        for(auto x: weights) {
+            if(cur+x<=medium) {
+            cur+=x;
+            } else {
+                d++;
+                cur=x;
+                if(cur>medium) return false;
+                if(d>D) return false;
+            }        
+        }
+        if(cur>0) d++;
+        return d<=D;     
+    }
+};
