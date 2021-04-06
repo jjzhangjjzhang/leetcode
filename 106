@@ -1,0 +1,26 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int n=postorder.size();
+        return buildTreeRecur(inorder,0, n-1,postorder,0, n-1);
+    }
+
+    TreeNode* buildTreeRecur(vector<int>& inorder,int i1,int j1,vector<int>& postorder,int i2,int j2)
+    {
+        if(i1>j1 || i2>j2) {
+            return NULL;
+        }
+
+        int rootVal=postorder[j2];
+        int x=i1;
+        while(x<=j1) {
+            if(inorder[x]==rootVal) break;
+            else x++;
+        }
+
+        TreeNode* root=new TreeNode(rootVal);
+        root->left = buildTreeRecur(inorder, i1,x-1, postorder,i2,i2+x-i1-1);
+        root->right = buildTreeRecur(inorder,x+1,j1 , postorder,i2+x-i1, j2-1);
+        return root;
+    }
+};
