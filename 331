@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        
+       stack<char> st;
+        preorder.push_back(','); 
+                bool valid = false;
+
+        for(auto c: preorder){
+            if(c == '#'){
+                while(!st.empty() && st.top() == '#'){ 
+                    st.pop(); 
+                    if(st.empty() || st.top() == '#') return false;
+                    st.pop();
+                }
+                st.push('#');
+            }else if(c == ','){
+                if(valid) st.push('n');
+                valid = false;
+            }else{
+                valid = true;
+            }
+        }
+        
+        return st.size() == 1 && st.top() == '#';
+    }
+};
