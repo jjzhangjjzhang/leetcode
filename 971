@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
+            vector<int> res;
+        int cur=0;
+        if(check(root, cur, res, voyage)) {return res;}
+        else {
+            return vector<int>{-1};
+        }
+    }
+   
+
+    bool check(TreeNode* root, int& cur, vector<int>& res, vector<int>& voyage) {
+        if (root==NULL) return true;
+        if (root->val != voyage[cur]) return false;
+        cur++;
+        if (root->left && root->left->val != voyage[cur]) {
+            res.push_back(root->val);
+            if(!check(root->right, cur, res, voyage)) return false;
+            if(!check(root->left, cur, res, voyage)) return false;
+            return true;
+        }
+         if(!check(root->left, cur, res, voyage)) return false;
+            if(!check(root->right, cur, res, voyage)) return false;
+            return true;
+    }
+};
