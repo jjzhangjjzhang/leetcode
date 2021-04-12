@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int comb(int n, int k) {
+        long res=1;
+        if(k>n/2) k=n-k;
+        if (k==0) return 1;
+        for(int i=0; i<k; i++) {
+            res=(res*(n-i)/(i+1))%1000000007;
+        }
+        
+        return res;
+    }
+     int numOfWays(std::vector<int>& numbers) {
+         return numOfWays1(numbers)-1;
+     }
+     int numOfWays1(std::vector<int>& numbers) {
+         if(numbers.size()<=1) return 1;
+         int pivot=numbers[0];
+         vector<int> small, large;
+         for(int i=1; i<numbers.size(); i++) {
+             if(numbers[i]<numbers[0]) {
+                small.push_back(numbers[i]); 
+             } else {
+                large.push_back(numbers[i]);  
+             }
+         }
+         long res=(numOfWays1(large)*numOfWays1(small))%1000000007;
+         res=(res*comb(small.size()+large.size(), small.size()))%1000000007;
+         return res;
+    }
+
+};
