@@ -1,0 +1,33 @@
+class Solution {
+public:
+     int reversePairs(vector<int>& nums) {
+        return reversePairsSub(nums, 0, nums.size() - 1);
+    }
+    
+ int reversePairsSub(vector<int>& nums, int l, int r) {
+    if (l >= r) return 0;
+        
+    int m = l + ((r - l) >> 1);
+    int res = reversePairsSub(nums, l, m) + reversePairsSub(nums, m + 1, r);
+        
+    int i = l, j = m + 1, k = 0, p = m + 1;
+    vector<int> merge(r - l + 1,0);
+        
+    while (i <= m) {
+        while(p <= r && ((nums[i]/2 > nums[p])|| (nums[i]/2 == nums[p] &&nums[i]%2==1 ))) p++;
+        res += p - (m + 1);
+				
+        while (j <= r && nums[i] >= nums[j]) merge[k++] = nums[j++];
+        merge[k++] = nums[i++];
+    }
+        
+    while (j <= r) merge[k++] = nums[j++];
+    for(int i=0; i<merge.size(); i++) {
+        nums[l+i]=merge[i];
+    }
+        
+        
+    return res;
+}
+   
+};
