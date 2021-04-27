@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        int res=0;
+        sub(root, res);
+        return res;
+    }
+    bool sub(TreeNode* root, int& res) {
+        if(root==nullptr) {
+            return false;
+        }
+        bool isLeft=sub(root->left, res);
+        bool isRight=sub(root->right, res);
+        if(root->left ==nullptr && root->right == nullptr) {
+            res++;return true;
+        }
+        if(root->left==nullptr && root->right!=nullptr) {
+            return false;
+        }
+        if(root->left!=nullptr && isLeft && root->right==nullptr) {
+            res++;
+            return true;
+        }
+        if(isLeft && isRight) {
+            res++;
+            return true;
+        }
+        return false;
+    }
+};
