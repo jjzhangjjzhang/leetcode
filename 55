@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        if(nums.size()<2) return true;
+        int cur=1, maxi=nums[0];
+        while(cur<=maxi) {
+            maxi=maxi>cur+nums[cur]?maxi:cur+nums[cur];
+            if(maxi>=nums.size()-1) return true;
+            cur++;
+        }
+        return maxi>=nums.size()-1;
+        
+    }
+};
