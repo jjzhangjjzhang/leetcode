@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool canReach(vector<int>& arr, int start) {
+        vector<int> visited(arr.size(), 0);
+        return dfs(arr, start, visited);
+       
+    }
+    
+    bool dfs(vector<int>& arr, int start, vector<int>& visited) {
+        if(start<0 || start>=arr.size()) return false;
+        if(visited[start]==1) return false;
+        int x=arr[start];
+        if(x==0) return true;
+        visited[start]=1;
+        if(dfs(arr, start+x, visited)) return true;
+        if(dfs(arr, start-x, visited)) return true;
+        return false;
+    }
+};
