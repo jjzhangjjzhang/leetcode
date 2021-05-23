@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int minInsertions(string s) {
+        int left=0;
+        int right =0;
+        int result=0;
+        for(int i=0; i<s.size(); i++) {
+            if(s[i]=='(') {
+                if(right==0) {
+                left++;
+                } else {
+                    result++;
+                    if(left==0) {
+                        result++;
+                        left++;
+                    }
+                    right=0;
+                    
+                }
+            } else {
+                if(right==0) {
+                    right++;
+                } else {
+                    if(left>0) {
+                    left--;
+                    right=0;
+                    } else {
+                        result++;
+                        right=0;
+                    }
+                }
+            }
+        }
+        if(left!=0) {
+            result+=2*left-right;
+        } else {
+            if(right==2) result++;
+            if(right==1) result+=2;
+        }
+        return result;
+    }
+};
