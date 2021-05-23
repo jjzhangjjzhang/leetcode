@@ -1,0 +1,46 @@
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        int left=0;
+        string result;
+        for(int i=0; i<s.size(); i++) {
+            if(s[i]!='(' && s[i]!=')') {
+                result.push_back(s[i]);
+            } else {
+                if(s[i]=='(') {
+                    result.push_back(s[i]);
+                    left++;
+                } else {
+                    if(left>0) {
+                        left--;
+                        result.push_back(s[i]);
+                    }
+                }
+            }
+        }
+        if(left==0) return result;
+                int x=result.size()-left;
+        cout<<left;
+        cout<<x;
+if(x==0) return "";
+        string finalresult(x,'a');
+        int right=0;
+        x--;
+        for(int i=result.size()-1; i>=0; i--) {
+            if(result[i]!='(' && result[i]!=')') {
+                finalresult[x--]=result[i];
+            } else {
+                if(result[i]==')') {
+                finalresult[x--]=result[i];
+                    right++;
+                } else {
+                    if(right>0) {
+                        right--;
+                        finalresult[x--]=result[i];
+                    }
+                }
+            }
+        }
+        return finalresult;
+    }
+};
