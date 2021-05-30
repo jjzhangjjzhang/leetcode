@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int dfs(string s, int beg, int end, unordered_set<int>& odd, vector<vector<int>>& dp) {
+        if(dp[beg][end]!=-1) return dp[beg][end];
+        if(odd.size()<2) {dp[beg][end]=end-beg+1; return end-beg+1;}
+        int tmp=0;
+        if(beg+1<s.size()) {
+            if(odd.find(s[beg]-'0')==odd.end()) {
+                odd.insert(s[beg]-'0');
+            } else {
+                odd.erase(s[beg]-'0');
+            }
+            tmp=dfs(s, beg+1, end, odd, dp);
+            if(odd.find(s[beg]-'0')==odd.end()) {
+                odd.insert(s[beg]-'0');
+            } else {
+                odd.erase(s[beg]-'0');
+            }
+        }
+        if(end-1>=0) {
+            if(odd.find(s[end]-'0')==odd.end()) {
+                odd.insert(s[end]-'0');
+            } else {
+                odd.erase(s[end]-'0');
+            }
+            tmp=max(tmp, dfs(s, beg, end-1, odd, dp));
+            if(odd.find(s[end]-'0')==odd.end()) {
+                odd.insert(s[end]-'0');
+            } else {
+                odd.erase(s[end]-'0');
+            }
+        }
+        dp[beg][end]=tmp;
+        return tmp;
+    }
+    int longestAwesome(string s) {
+        unordered_map<int, int> mp;
+        unordered_set<int> odd;
+vector<vector<int>> dp(s.size(), vector<int>(s.size(),-1));
+        for(auto k:s) {
+            mp[k-'0']++;
+            if(mp[k-'0']%2==1) odd.insert(k-'0');
+            else odd.erase(k-'0');
+        }
+       
+        return dfs(s, 0, s.size()-1, odd, dp);
+        
+    }
+};
